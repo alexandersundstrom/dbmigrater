@@ -56,7 +56,8 @@ CREATE VIEW event_view AS
             event_slot ON event_slot.event_id = event.oid
                 LEFT JOIN
             location ON location.oid = event.location_oid;
-            ```
+            
+```
 
 ### Speakers
 * ALTER TABLE speakers ADD COLUMN middle_name character varying(255);
