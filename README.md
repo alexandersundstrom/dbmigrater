@@ -56,15 +56,11 @@ CREATE VIEW event_view AS
 * ALTER TABLE speakers ADD COLUMN twitter_name character varying(35);
 * ALTER TABLE speakers ADD COLUMN company_old text;
 * ALTER TABLE speakers ADD COLUMN old_id bigint;
-
-
 * ALTER TABLE speakers
   ADD CONSTRAINT old_id UNIQUE(old_id);
 
 #### Conferences
 * ALTER TABLE conferences ADD COLUMN old_id bigint;
-
-
 * ALTER TABLE conferences
   ADD CONSTRAINT old_id_conference UNIQUE(old_id);
 
@@ -75,29 +71,21 @@ CREATE VIEW event_view AS
 * ALTER TABLE sessions ADD COLUMN slide_url text;
 * ALTER TABLE sessions ADD COLUMN video_url text;
 * ALTER TABLE public.sessions ADD COLUMN old_event_slot_slot_id bigint;
-
-
 * ALTER TABLE sessions
     ADD CONSTRAINT sessions_old_event_slot_slot_id UNIQUE(old_event_slot_slot_id);
 
 #### Locations
 * ALTER TABLE locations ADD COLUMN old_id bigint;
-
-
 * ALTER TABLE locations
     ADD CONSTRAINT locations_old_id UNIQUE(old_id);
 
 #### Tracks
 * ALTER TABLE tracks ADD COLUMN old_id bigint;
-
-
 * ALTER TABLE tracks
     ADD CONSTRAINT tracks_old_id UNIQUE(old_id);
 
 #### Time_slots
 * ALTER TABLE time_slots ADD COLUMN old_id bigint;
-
-
 * ALTER TABLE time_slots
     ADD CONSTRAINT "time _slots_old_id" UNIQUE(old_id);
 
