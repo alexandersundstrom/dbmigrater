@@ -59,7 +59,7 @@ CREATE VIEW event_view AS
             
 ```
 
-### Speakers
+#### Speakers
 * ALTER TABLE speakers ADD COLUMN middle_name character varying(255);
 * ALTER TABLE speakers ADD COLUMN address character varying(50);
 * ALTER TABLE speakers ADD COLUMN zip_code character varying(10);
@@ -77,14 +77,14 @@ CREATE VIEW event_view AS
 * ALTER TABLE speakers
   ADD CONSTRAINT old_id UNIQUE(old_id);
 
-### Conferences
+#### Conferences
 * ALTER TABLE conferences ADD COLUMN old_id bigint;
 
 
 * ALTER TABLE conferences
   ADD CONSTRAINT old_id_conference UNIQUE(old_id);
 
-### Sessions
+#### Sessions
 * ALTER TABLE sessions ADD COLUMN old_id bigint;
 * ALTER TABLE sessions ADD COLUMN note text;
 * ALTER TABLE sessions ADD COLUMN short_title character varying(50);
@@ -96,21 +96,21 @@ CREATE VIEW event_view AS
 * ALTER TABLE sessions
     ADD CONSTRAINT sessions_old_event_slot_slot_id UNIQUE(old_event_slot_slot_id);
 
-### Locations
+#### Locations
 * ALTER TABLE locations ADD COLUMN old_id bigint;
 
 
 * ALTER TABLE locations
     ADD CONSTRAINT locations_old_id UNIQUE(old_id);
 
-### Tracks
+#### Tracks
 * ALTER TABLE tracks ADD COLUMN old_id bigint;
 
 
 * ALTER TABLE tracks
     ADD CONSTRAINT tracks_old_id UNIQUE(old_id);
 
-### Time_slots
+#### Time_slots
 * ALTER TABLE time_slots ADD COLUMN old_id bigint;
 
 
