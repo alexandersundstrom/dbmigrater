@@ -23,7 +23,6 @@ public class Exporter {
 
   //  ON CONFLICT STATEMENTS
   public static final String ON_CONFLICT_STATEMENT_OLD_ID = "ON CONFLICT (old_id) DO NOTHING;";
-  private static final String ON_CONFLICT_STATEMENT_TRACKS = "ON CONFLICT (old_event_id) DO NOTHING;";
   private static final String ON_CONFLICT_STATEMENT_SESSIONS = "ON CONFLICT (old_event_slot_slot_id) DO NOTHING;";
 
   //  FILES
@@ -39,7 +38,7 @@ public class Exporter {
   public static final String SPEAKER_TABLE = "oldconf.speaker";
   public static final String CONFERENCE_TABLE = "oldconf.conference";
   public static final String LOCATION_TABLE = "oldconf.location";
-  public static final String TRACK_TABLE = "oldconf.event_view";
+  public static final String TRACK_TABLE = "oldconf.track";
   public static final String SLOT_TABLE = "oldconf.slot";
   public static final String SESSION_TABLE = "oldconf.event_view";
 
@@ -48,7 +47,7 @@ public class Exporter {
   public static final String SPEAKER_START = "INSERT INTO speakers (old_id,first_name,middle_name,last_name,title,company_old,address,zip_code,city,postalbox,country,email,homepage,twitter_name,phone,bio,testimonial,state,inserted_at,updated_at) \n VALUES ";
   public static final String CONFERENCE_START = "INSERT INTO conferences(old_id,name,start_date,inserted_at,updated_at) \n VALUES ";
   private static final String LOCATION_START = "INSERT INTO locations(old_id,name,description,conference_id,inserted_at,updated_at) \n VALUES ";
-  private static final String TRACK_START = "INSERT INTO tracks(old_id,old_event_id,name,conference_id,description,color,location_id,inserted_at,updated_at) \n VALUES ";
+  private static final String TRACK_START = "INSERT INTO tracks(old_id,name,conference_id,description,color,inserted_at,updated_at) \n VALUES ";
   private static final String SLOT_START = "INSERT INTO time_slots(old_id,conference_id,start_time,end_time) \n VALUES ";
   private static final String SESSION_START = "INSERT INTO sessions(old_id,old_event_slot_slot_id,title,description,track_id,time_slot_id,note,short_title,slide_URL,video_URL,inserted_at,updated_at) \n VALUES ";
 
@@ -95,7 +94,7 @@ public class Exporter {
         writeToConferenceFile(writer, rs);
       } else if (tableName.equals(LOCATION_TABLE)) {
         writeToLocationFile(writer, rs);
-      } else if (tableName.equals(TRACK_TABLE) && fileName.equals(TRACK_FILE)) {
+      } else if (tableName.equals(TRACK_TABLE)) {
         writeToTracksFile(writer, rs);
       } else if (tableName.equals(SLOT_TABLE)) {
         writeToTimeSlotFile(writer, rs);
@@ -241,15 +240,13 @@ public class Exporter {
         count++;
 
         //HACK, TODO remove timestamps that for some reason evaluates to 'null' the proper way
-        String trackModifiedAt = String.valueOf(rs.getTimestamp("track_last_modified")).equals("null") ? getCurrentTimestamp() : String.valueOf(rs.getTimestamp("track_last_modified"));
+        String trackModifiedAt = String.valueOf(rs.getTimestamp("lastModified")).equals("null") ? getCurrentTimestamp() : String.valueOf(rs.getTimestamp("lastModified"));
         writer.print("(");
-        writer.print(rs.getInt("track_oid") + DELIMITER);
-        writer.print(rs.getInt("event_oid") + DELIMITER);
-        writer.print(formatStringsForDatabase(rs.getString("track_name")) + DELIMITER);
-        writer.print("(SELECT id FROM conferences where old_id=" + rs.getInt("track_conference_id") + ")" + DELIMITER);
-        writer.print(formatStringsForDatabase(rs.getString("track_description")) + DELIMITER);
-        writer.print(formatStringsForDatabase(rs.getString("track_color")) + DELIMITER);
-        writer.print("(SELECT id FROM locations where old_id=" + rs.getInt("location_oid") + ")" + DELIMITER);
+        writer.print(rs.getInt("oid") + DELIMITER);
+        writer.print(formatStringsForDatabase(rs.getString("name")) + DELIMITER);
+        writer.print("(SELECT id FROM conferences where old_id=" + rs.getInt("conference_oid") + ")" + DELIMITER);
+        writer.print(formatStringsForDatabase(rs.getString("description")) + DELIMITER);
+        writer.print(formatStringsForDatabase(rs.getString("color")) + DELIMITER);
         writer.print(formatStringsForDatabase(trackModifiedAt) + DELIMITER);
         writer.print(formatStringsForDatabase(trackModifiedAt));
         writer.print(")");
@@ -263,7 +260,7 @@ public class Exporter {
     } catch (SQLException e) {
       e.printStackTrace();
     }
-    writer.println(ON_CONFLICT_STATEMENT_TRACKS);
+    writer.println(ON_CONFLICT_STATEMENT_OLD_ID);
     System.out.println(count + " tracks copied");
     System.out.println();
   }
@@ -314,7 +311,7 @@ public class Exporter {
         writer.print(rs.getInt("event_slot_slot_id") + DELIMITER);
         writer.print(formatStringsForDatabase(rs.getString("event_title")) + DELIMITER);
         writer.print(formatStringsForDatabase(rs.getString("event_abstract")) + DELIMITER); //Abstract will be imported as description in the new db
-        writer.print("(SELECT id FROM tracks WHERE old_event_id=" + rs.getInt("event_track_oid") + ")" + DELIMITER);
+        writer.print("(SELECT id FROM tracks WHERE old_id=" + rs.getInt("event_track_oid") + ")" + DELIMITER);
         writer.print("(SELECT id FROM time_slots WHERE old_id=" + rs.getInt("event_slot_slot_id") + ")" + DELIMITER);
         writer.print(formatStringsForDatabase(rs.getString("event_note")) + DELIMITER);
         writer.print(formatStringsForDatabase(rs.getString("event_shortTitle")) + DELIMITER);
