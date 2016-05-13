@@ -27,7 +27,7 @@ public class Exporter {
   private static final String ON_CONFLICT_STATEMENT_SESSIONS = "ON CONFLICT (old_event_slot_slot_id) DO NOTHING;";
 
   //  FILES
-  private static final String PATH = "./dbmigration/files/";
+  private static final String PATH = "files/";
   public static final String SPEAKER_FILE = PATH + "speakers.sql";
   public static final String CONFERENCE_FILE = PATH + "conferences.sql";
   public static final String LOCATION_FILE = PATH + "locations.sql";
