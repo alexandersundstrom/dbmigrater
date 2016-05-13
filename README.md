@@ -89,7 +89,7 @@ CREATE VIEW event_view AS
 * ALTER TABLE time_slots
     ADD CONSTRAINT "time _slots_old_id" UNIQUE(old_id);
 
-## How to use it
+## To run
 As of 2016-05-12, both classes are setup to work against a local copy of both databases.
 To use it against the real databases, update the following strings in both classes so that they are pointing to the correct databases:
 
