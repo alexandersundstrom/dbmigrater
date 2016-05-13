@@ -128,7 +128,14 @@ To use it against the real databases, update the following strings in both class
 Next step is to simply run the main method of Exporter, and then Importer, that's all!
 
 ## Supported tables
-Exporting is as of 2016-05-12 supported for Speakers, Conferences, Locations, Tracks, Slots and Events. 
+Exporting is as of 2016-05-12 supported for:
+
+* Speakers
+* Conferences
+* Locations
+* Tracks
+* Slots
+* Events 
 
 
 
