@@ -133,6 +133,13 @@ public class Exporter {
     }
 
     // METHODS FOR THE DIFFERENT TABLES TO MIGRATE /////////////////////////////////////////////////////////////////////////
+    /*
+    These method follow the same pattern,
+    First you write the INSERT INTO statement for the specific table (as an example writer.println(SPEAKER_START)).
+    Each row represents a column mapping, from the old to the new database, and is separated with a DELIMITER (,), except for the last row.
+    Last, you write an ON CONFLICT Statement so that only new rows will be imported.
+     */
+
     private void writeToSpeakerFile(PrintWriter writer, ResultSet rs) {
         count = 0;
         writer.println(SPEAKER_START);
